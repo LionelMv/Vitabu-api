@@ -1,0 +1,9 @@
+# Django settings
+SECRET_KEY='django-insecure-_s_=zugj&+ewj33yjykhz^py+*b#npvdi@7hx3o^5p)zbo3j2z'
+
+# Database settings [Postgres]
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=5432
