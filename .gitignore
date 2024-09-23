@@ -5,3 +5,4 @@ Pipfile.lock
 
 project/views1.py
 project/urls1.py
+.coverage
