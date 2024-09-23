@@ -6,6 +6,7 @@ Pipfile.lock
 
 project/views1.py
 project/urls1.py
-api/__pycache__
-project/__pycache__
-project/migrations/__pycache__
+api/__pycache__/
+project/__pycache__/
+project/migrations/__pycache__/
+project/tests/__pycache__/
