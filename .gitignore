@@ -1,8 +1,11 @@
 .env
+.coverage
 
 # Pipenv
 Pipfile.lock
 
 project/views1.py
 project/urls1.py
-.coverage
+api/__pycache__
+project/__pycache__
+project/migrations/__pycache__
