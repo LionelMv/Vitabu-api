@@ -1,12 +1,34 @@
 from django.urls import reverse
+from django.test import TestCase
+from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
+from rest_framework.test import APIClient
+from oauth2_provider.models import AccessToken
 from rest_framework import status
-from .models import Customer, Order
+from ..models import Customer, Order
+from django.utils import timezone
+from datetime import timedelta
 
 
 class VitabuAPITestCase(APITestCase):
     def setUp(self):
         """Setup to create sample data"""
+        # Create a test user
+        self.user = User.objects.create_user(
+            username='testuser', password='testpassword')
+
+        # Create an OAuth2 token for the user
+        self.client = APIClient()
+        self.token = AccessToken.objects.create(
+            user=self.user,
+            token='testtoken123',  # Mock token
+            expires=timezone.now() + timedelta(hours=1)  # token expiration
+        )
+
+        # Add the token to the client for authenticated requests
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer ' + self.token.token)
+
         # Create a sample customer for testing
         self.customer = Customer.objects.create(
             name="John Doe",

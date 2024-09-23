@@ -8,6 +8,9 @@ django = "*"
 python-decouple = "*"
 psycopg = {extras = ["binary"], version = "*"}
 djangorestframework = "*"
+coverage = "*"
+django-allauth = {extras = ["socialaccount"], version = "*"}
+django-oauth-toolkit = "*"
 
 [dev-packages]
 
