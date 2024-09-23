@@ -17,4 +17,4 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders')
 
     def __str__(self):
-        return f"Order of {self.item} for {self.amount} by {self.customer.name} at {self.time}"
+        return f"Order of {self.item} for {self.amount:.2f} by {self.customer.name} at {self.time}"
