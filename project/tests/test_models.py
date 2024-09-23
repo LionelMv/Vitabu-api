@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class CustomerModelTest(TestCase):
-    
+
     def setUp(self):
         # Create a customer object for testing
         self.customer = Customer.objects.create(
@@ -49,5 +49,6 @@ class OrderModelTest(TestCase):
 
     def test_order_str_method(self):
         """Test the __str__ method of the Order model"""
-        expected_str = f"Order of Book A for 20.00 by {self.customer.name} at {self.order.time}"
+        expected_str = f"Order of Book A for 20.00 by \
+            {self.customer.name} at {self.order.time}"
         self.assertEqual(str(self.order), expected_str)
