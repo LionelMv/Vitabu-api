@@ -1,6 +1,8 @@
 from django.test import TestCase
 from ..models import Customer, Order
 from django.utils import timezone
+from unittest.mock import patch
+from unittest import mock
 
 
 class CustomerModelTest(TestCase):
@@ -26,13 +28,18 @@ class CustomerModelTest(TestCase):
 
 class OrderModelTest(TestCase):
 
-    def setUp(self):
+    @patch('project.signals.send_sms_alert')
+    def setUp(self, mock_send_sms):
         # Create a customer object
         self.customer = Customer.objects.create(
             name='Jane Doe',
             email='janedoe@example.com',
-            code='CUST456'
+            code='CUST456',
+            phone_number='+254705'
         )
+
+        mock_send_sms.return_value = None
+
         # Create an order object
         self.order = Order.objects.create(
             item='Book A',
@@ -40,6 +47,7 @@ class OrderModelTest(TestCase):
             customer=self.customer,
             time=timezone.now()
         )
+        mock_send_sms.assert_called_once_with(self.customer.phone_number, mock.ANY)
 
     def test_order_creation(self):
         """Test that an order object is created successfully"""
@@ -49,6 +57,8 @@ class OrderModelTest(TestCase):
 
     def test_order_str_method(self):
         """Test the __str__ method of the Order model"""
-        expected_str = f"Order of Book A for 20.00 by \
-            {self.customer.name} at {self.order.time}"
+        expected_str = (
+            f"Order of Book A for 20.00 by {self.customer.name} "
+            f"at {self.order.time}"
+        )
         self.assertEqual(str(self.order), expected_str)
