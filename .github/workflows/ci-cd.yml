@@ -44,23 +44,21 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
+      
+      - name: Set up environment variables
+        run: |
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "SMS_USERNAME=${{ secrets.SMS_USERNAME }}" >> $GITHUB_ENV
+          echo "SMS_API_KEY=${{ secrets.SMS_API_KEY }}" >> $GITHUB_ENV
 
       - name: Set up Database
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          SMS_USERNAME: ${{ secrets.SMS_USERNAME }}
-          SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
         run: |
           pipenv run python manage.py migrate
 
       - name: Run Tests
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
         run: |
-          # Activate the pipenv environment
           pipenv run python manage.py test --verbosity=2
 
       - name: Upload Coverage Report
