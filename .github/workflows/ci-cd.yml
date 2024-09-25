@@ -57,14 +57,14 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           SMS_USERNAME: ${{ secrets.SMS_USERNAME }}
           SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
-          DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/{{ secrets.DB_NAME }}
+          DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@postgres:5432/${{ secrets.DB_NAME }}
         run: |
           pipenv run python manage.py migrate
           pipenv run python manage.py collectstatic --noinput
 
       - name: Run Tests
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          DATABASE_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@postgres:5432/${{ secrets.DB_NAME }}
         run: |
           # Activate the pipenv environment
           pipenv run python manage.py test --verbosity=2
