@@ -11,6 +11,7 @@ djangorestframework = "*"
 coverage = "*"
 django-allauth = {extras = ["socialaccount"], version = "*"}
 django-oauth-toolkit = "*"
+africastalking = "*"
 
 [dev-packages]
 
