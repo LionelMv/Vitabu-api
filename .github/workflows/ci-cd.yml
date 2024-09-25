@@ -49,9 +49,8 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
         run: |
-          pipenv shell
-          python manage.py migrate
-          python manage.py collectstatic --noinput
+          pipenv run python manage.py migrate
+          pipenv run python manage.py collectstatic --noinput
 
       - name: Run Tests
         env:
