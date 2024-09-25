@@ -57,9 +57,11 @@ jobs:
         run: |
           pipenv run python manage.py migrate
 
-      - name: Run Tests
+      - name: Run Tests with coverage
         run: |
-          pipenv run python manage.py test --verbosity=2
+          pipenv run coverage run manage.py test
+          pipenv run coverage html
+          pipenv run coverage report
 
       - name: Upload Coverage Report
         if: success()
