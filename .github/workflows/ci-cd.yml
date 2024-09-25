@@ -47,6 +47,7 @@ jobs:
 
       - name: Set up Database
         env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
         run: |
           pipenv run python manage.py migrate
