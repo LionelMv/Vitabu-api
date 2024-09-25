@@ -1,17 +1,42 @@
 from django.urls import reverse
+from django.test import TestCase
+from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
+from rest_framework.test import APIClient
+from oauth2_provider.models import AccessToken
 from rest_framework import status
-from .models import Customer, Order
+from ..models import Customer, Order
+from django.utils import timezone
+from datetime import timedelta
+from unittest.mock import patch
+from unittest import mock
 
 
 class VitabuAPITestCase(APITestCase):
     def setUp(self):
         """Setup to create sample data"""
+        # Create a test user
+        self.user = User.objects.create_user(
+            username='testuser', password='testpassword')
+
+        # Create an OAuth2 token for the user
+        self.client = APIClient()
+        self.token = AccessToken.objects.create(
+            user=self.user,
+            token='testtoken123',  # Mock token
+            expires=timezone.now() + timedelta(hours=1)  # token expiration
+        )
+
+        # Add the token to the client for authenticated requests
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer ' + self.token.token)
+
         # Create a sample customer for testing
         self.customer = Customer.objects.create(
             name="John Doe",
             email="johndoe@example.com",
-            code="CUST123"
+            code="CUST123",
+            phone_number="+2547050"
             )
 
         # Create a sample order for testing
@@ -29,7 +54,8 @@ class VitabuAPITestCase(APITestCase):
         self.valid_customer_data = {
             "name": "Jane Doe",
             "email": "janedoe@example.com",
-            "code": "CUST456"
+            "code": "CUST456",
+            "phone_number": "+2547056"
             }
         self.valid_order_data = {
             "customer_id": self.customer.id,
@@ -69,8 +95,12 @@ class VitabuAPITestCase(APITestCase):
         self.assertEqual(response.data[0]['code'], "CUST123")
         self.assertEqual(response.data[0]['email'], "johndoe@example.com")
 
-    def test_create_order(self):
+    @patch('project.signals.send_sms_alert')
+    def test_create_order(self, mock_send_sms):
         """Test to create a new order"""
+        # Mock the SMS function to do nothing
+        mock_send_sms.return_value = None
+
         # Send a POST request to create an order
         response = self.client.post(
             self.order_url,
@@ -85,6 +115,10 @@ class VitabuAPITestCase(APITestCase):
         # Check if the order was created in the database
         self.assertEqual(Order.objects.count(), 2)
         self.assertEqual(Order.objects.last().item, "Book A")
+
+        # Check that the mock SMS function was called once
+        mock_send_sms.assert_called_once_with(
+            self.customer.phone_number, mock.ANY)
 
     def test_get_orders(self):
         """Test to get all orders"""

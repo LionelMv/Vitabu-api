@@ -2,8 +2,19 @@
 SECRET_KEY='django-insecure-_s_=zugj&+ewj33yjykhz^py+*b#npvdi@7hx3o^5p)zbo3j2z'
 
 # Database settings [Postgres]
+# Change to your database credentials
 DB_NAME=postgres
 DB_USER=postgres
 DB_PASSWORD=password
 DB_HOST=localhost
 DB_PORT=5432
+
+# AllAuth settings
+# Change to your Google credentials
+GOOGLE_CLIENT_ID=''
+GOOGLE_CLIENT_SECRET=''
+
+# Africas Talking settings
+# Add your API KEY
+SMS_USERNAME='sandbox'
+SMS_API_KEY=''
