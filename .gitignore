@@ -11,3 +11,4 @@ api/__pycache__/
 project/__pycache__/
 project/migrations/__pycache__/
 project/tests/__pycache__/
+project/utils/__pycache__/
