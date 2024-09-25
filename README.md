@@ -9,12 +9,14 @@ This API provides a simple service for managing customers and their orders, impl
 3. **Authentication and Authorization:** Secure access to the API using OpenID Connect (OIDC) via django-allauth, enabling seamless integration with identity providers like Google for OAuth2-based authentication.
 
 4. **SMS Notifications:** Upon successful order creation, the API sends an SMS notification to the customer's registered phone number using Africa’s Talking SMS gateway.
+5. **Testing and CI/CD:** Includes comprehensive unit tests to ensure reliability, with continuous integration and deployment setups for automated testing and deployment.
 
 ## Technologies Used
 - **Backend:** Python, Django, Django REST Framework
 Database: PostgreSQL
 - **Authentication:** OpenID Connect (OIDC) via django-allauth
 - **SMS Alerts:** Africa’s Talking SMS gateway
+- **CI/CD:** GitHub Actions
 
 ## Setup & Installation
 1. Clone the repository.
